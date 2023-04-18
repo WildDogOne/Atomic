@@ -12,7 +12,7 @@ foreach ($atomic in $atomics)
     {
         $sess = New-PSSession -ComputerName $target -Credential $psCred
         Invoke-AtomicTest $t -Session $sess -GetPrereqs
-        Invoke-AtomicTest $t -Session $sess -LoggingModule "Attire-ExecutionLogger" -ExecutionLogPath "c:\temp\execution\$t.json"
+        Invoke-AtomicTest $t -Session $sess -LoggingModule "Attire-ExecutionLogger" -ExecutionLogPath "$ScriptDir\execution\$t.json"
         Remove-PSSession $sess
     }
 }
