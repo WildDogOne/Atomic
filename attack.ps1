@@ -8,7 +8,7 @@ $atomics = Get-Content $ScriptDir\atomics.txt
 foreach ($atomic in $atomics)
 {
     $t = $atomic.Split(" ")[0]
-    if ($t -match "T1003.001")
+    if ($t -match "T")#1003.001")
     {
         $sess = New-PSSession -ComputerName $target -Credential $psCred
         Invoke-AtomicTest $t -Session $sess -GetPrereqs
@@ -19,6 +19,6 @@ foreach ($atomic in $atomics)
 
 $sess = New-PSSession -ComputerName $target -Credential $psCred
 #Invoke-AtomicTest T1003.001 -ShowDetailsBrief
-Invoke-AtomicTest T1003.001 -Session $sess -GetPrereqs
-Invoke-AtomicTest T1003.001 -Session $sess -LoggingModule "Attire-ExecutionLogger" -ExecutionLogPath "$ScriptDir\execution\T1003.001.json"
+#Invoke-AtomicTest T1003.001 -Session $sess -GetPrereqs
+#Invoke-AtomicTest T1003.001 -Session $sess -LoggingModule "Attire-ExecutionLogger" -ExecutionLogPath "$ScriptDir\execution\T1003.001.json"
 Remove-PSSession $sess
