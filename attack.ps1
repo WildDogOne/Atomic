@@ -1,7 +1,7 @@
 Clear-Host
 $ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
 . ".\config.ps1"
-Import-Module ".\Invoke-AtomicRedTeam.psd1" -Force
+Import-Module ".\Attire-ExecutionLogger.psm1" -Force
 $psCred = New-Object System.Management.Automation.PSCredential -ArgumentList ($username, $password)
 
 $atomics = Get-Content $ScriptDir\atomics.txt
