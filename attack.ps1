@@ -19,6 +19,6 @@ foreach ($atomic in $atomics)
 
 $sess = New-PSSession -ComputerName $target -Credential $psCred
 #Invoke-AtomicTest T1003.001 -ShowDetailsBrief
-#Invoke-AtomicTest T1003.001 -Session $sess -GetPrereqs -TestNumbers 7
-#Invoke-AtomicTest T1003.001 -Session $sess -TestNumbers 7
+Invoke-AtomicTest T1003.001 -Session $sess -GetPrereqs
+Invoke-AtomicTest T1003.001 -Session $sess -LoggingModule "Attire-ExecutionLogger" -ExecutionLogPath "$ScriptDir\execution\T1003.001.json"
 Remove-PSSession $sess
