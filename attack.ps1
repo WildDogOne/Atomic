@@ -8,7 +8,7 @@ $atomics = Get-Content $ScriptDir\atomics.txt
 foreach ($atomic in $atomics)
 {
     $t = $atomic.Split(" ")[0]
-    if ($t -match "T")#1003.001")
+    if ($t.startswith("T"))
     {
         $sess = New-PSSession -ComputerName $target -Credential $psCred
         Invoke-AtomicTest $t -Session $sess -GetPrereqs
