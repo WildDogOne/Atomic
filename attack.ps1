@@ -1,8 +1,10 @@
 Clear-Host
-. "config.ps1"
+$ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
+. ".\config.ps1"
+
 $psCred = New-Object System.Management.Automation.PSCredential -ArgumentList ($username, $password)
 
-$atomics = Get-Content C:\temp\atomics.txt
+$atomics = Get-Content $ScriptDir\atomics.txt
 foreach ($atomic in $atomics)
 {
     $t = $atomic.Split(" ")[0]
