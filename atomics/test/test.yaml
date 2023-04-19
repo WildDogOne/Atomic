@@ -1,5 +1,5 @@
 - name: Test
-  auto_generated_guid:
+  auto_generated_guid: 96173da2-c483-40a1-94a3-87355af293e1
   description: Test
   supported_platforms:
     - windows
