@@ -21,6 +21,7 @@ atomic_tests:
       command: |
         bitsadmin.exe /transfer /Download /priority Foreground #{remote_file} #{local_file}
         dir %temp%\autoruns.exe bitsadmin
-      cleanup_command: del #{local_file} >nul 2>&1
+      cleanup_command: |
+        del #{local_file} >nul 2>&1
       name: command_prompt
       elevation_required: false
