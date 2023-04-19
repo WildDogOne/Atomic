@@ -1,0 +1,13 @@
+- name: Test
+  auto_generated_guid:
+  description: Test
+  supported_platforms:
+    - windows
+  input_arguments:
+  dependency_executor_name:
+  dependencies:
+  executor:
+    command: bitsadmin /create 1 bitsadmin /addfile 1 https://live.sysinternals.com/autoruns.exe $env:TEMP\autoruns.exe bitsadmin /RESUME 1 bitsadmin /complete 1
+    cleanup_command: Remove-Item $env:TEMP\autoruns.exe -ErrorAction Ignore
+    name: powershell
+    elevation_required: false
