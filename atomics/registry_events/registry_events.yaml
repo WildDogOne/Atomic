@@ -16,3 +16,21 @@ atomic_tests:
         Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" -Name "atomic_test"
       name: powershell
       elevation_required: true
+  - name: Tamper with Microsoft Defender for Endpoint Configuration - Add Exclusion
+    description: |
+      Tamper with Microsoft Defender for Endpoint configuration by adding an exclusion to the list of excluded file paths.
+    supported_platforms:
+      - windows
+    input_arguments:
+      excluded_path:
+        description: The path to be added as an exclusion
+        type: path
+        default: C:\Windows\Temp\excluded_folder
+    executor:
+      command: |
+        Add-MpPreference -ExclusionPath "#{excluded_path}"
+        Get-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths"
+      cleanup_command: |
+        Remove-MpPreference -ExclusionPath "#{excluded_path}"
+      name: powershell
+      elevation_required: true
