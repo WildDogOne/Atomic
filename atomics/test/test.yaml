@@ -7,7 +7,7 @@ atomic_tests:
     supported_platforms:
       - windows
     input_arguments:
-    dependency_executor_name:
+    dependency_executor_name: powershell
     dependencies:
     executor:
       command: bitsadmin /create 1 bitsadmin /addfile 1 https://live.sysinternals.com/autoruns.exe $env:TEMP\autoruns.exe bitsadmin /RESUME 1 bitsadmin /complete 1
