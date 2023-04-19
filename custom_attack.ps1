@@ -1,0 +1,1 @@
+Invoke-AtomicTest All -PathToAtomicsFolder C:\AtomicRedTeam\atomics

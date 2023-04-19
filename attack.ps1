@@ -14,7 +14,7 @@ foreach ($atomic in $atomics)
         Invoke-AtomicTest $t -Session $sess -GetPrereqs
         #Invoke-AtomicTest $t -Session $sess -LoggingModule "Attire-ExecutionLogger" -ExecutionLogPath "$ScriptDir\execution\$t.json"
         #Invoke-AtomicTest $t -Session $sess -ExecutionLogPath "$ScriptDir\execution\$t.csv"
-        Invoke-AtomicTest $t -Session $sess *>&1 | Tee-Object "$ScriptDir\execution\atomic-out.txt" -Append
+        Invoke-AtomicTest -TimeoutSeconds 60 $t -Session $sess *>&1 | Tee-Object "$ScriptDir\execution\atomic-out.txt" -Append
         Remove-PSSession $sess
     }
 }
