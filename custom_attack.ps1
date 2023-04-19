@@ -1,1 +1,1 @@
-Invoke-AtomicTest All -PathToAtomicsFolder C:\AtomicRedTeam\atomics
+Invoke-AtomicTest All -PathToAtomicsFolder C:\AtomicRedTeam\atomics -ShowDetailsBrief
