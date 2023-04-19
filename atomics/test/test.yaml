@@ -10,6 +10,6 @@ atomic_tests:
       command: |
         bitsadmin.exe /transfer /Download /priority Foreground https://live.sysinternals.com/autoruns.exe %temp%\autoruns.exe
         dir %temp%\autoruns.exe bitsadmin
-      cleanup_command: Remove-Item $env:TEMP\autoruns.exe -ErrorAction Ignore
+      cleanup_command: del %temp%\autoruns.exe >nul 2>&1
       name: command_prompt
       elevation_required: false
