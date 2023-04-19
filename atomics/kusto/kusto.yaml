@@ -1,0 +1,22 @@
+attack_technique: T1036.003
+display_name: "Masquerading: Rename System Utilities"
+atomic_tests:
+  - name: File Extension Masquerading
+    auto_generated_guid: cc9ad44f-1353-4eb0-a489-e129954d2a43
+    description: |
+      Creates a file with double file extensions to masquerade as a different file type.
+    supported_platforms:
+      - windows
+    input_arguments:
+      file:
+        description: File to create
+        type: path
+        default: atomic.docx.exe
+    executor:
+      command: |
+        New-Item -Path $env:TEMP\#{file} -ItemType File
+        get-childitem $env:TEMP\#{file}
+      cleanup_command: |
+        Remove-Item $env:TEMP\#{file} -ErrorAction Ignore
+      name: powershell
+      elevation_required: false
