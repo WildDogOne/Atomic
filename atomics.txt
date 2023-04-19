@@ -3,7 +3,7 @@ T1003-2 Credential Dumping with NPPSpy
 T1003-3 Dump svchost.exe to gather RDP credentials
 T1003-4 Retrieve Microsoft IIS Service Account Credentials Using AppCmd (using list)
 T1003-5 Retrieve Microsoft IIS Service Account Credentials Using AppCmd (using config)
-T1003-6 Dump Credential Manager using keymgr.dll and rundll32.exe
+#T1003-6 Dump Credential Manager using keymgr.dll and rundll32.exe
 T1003.001-1 Dump LSASS.exe Memory using ProcDump
 T1003.001-2 Dump LSASS.exe Memory using comsvcs.dll
 T1003.001-3 Dump LSASS.exe Memory using direct system calls and API unhooking
