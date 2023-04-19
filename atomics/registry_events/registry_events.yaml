@@ -1,0 +1,17 @@
+attack_technique: T1562.001
+display_name: "Masquerading: Rename System Utilities"
+atomic_tests:
+  - name: Tamper with MDE via Registry
+    auto_generated_guid: 194e9c50-9b92-49b8-8944-001ff6537d84
+    description: |
+      Changes registry keys used by MDE to enable/disable features.
+    supported_platforms:
+      - windows
+    executor:
+      command: |
+        Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" -Name "atomic_test" -Value 1
+        Get-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet"
+      cleanup_command: |
+        Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" -Name "atomic_test"
+      name: powershell
+      elevation_required: true
