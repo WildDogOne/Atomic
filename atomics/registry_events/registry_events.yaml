@@ -7,16 +7,22 @@ atomic_tests:
       Changes registry keys used by MDE to enable/disable features.
     supported_platforms:
       - windows
+    input_arguments:
+      excluded_path:
+        description: The path to be added as an exclusion
+        type: path
+        default: C:\Windows\Temp\excluded_folder
     executor:
       command: |
         New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" -Force
-        Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" -Name "atomic_test" -Value 1
+        Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" -Name "#{excluded_path}" -Value 0 -PropertyType DWORD -Force
         Get-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths"
       cleanup_command: |
-        Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" -Name "atomic_test"
+        Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" -Name "#{excluded_path}"
       name: powershell
       elevation_required: true
   - name: Tamper with Microsoft Defender for Endpoint Configuration - Add Exclusion
+    auto_generated_guid: a92e31bb-af61-4d07-b4aa-4e4a084eac0f
     description: |
       Tamper with Microsoft Defender for Endpoint configuration by adding an exclusion to the list of excluded file paths.
     supported_platforms:
@@ -32,5 +38,18 @@ atomic_tests:
         Get-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths"
       cleanup_command: |
         Remove-MpPreference -ExclusionPath "#{excluded_path}"
+      name: powershell
+      elevation_required: true
+  - name: Disable Microsoft Defender for Endpoint (PowerShell Module)
+    auto_generated_guid: c307f81f-f34c-4274-8e94-800821ba9fc6
+    description: |
+      Disables Microsoft Defender for Endpoint using its PowerShell module. Includes a cleanup command to re-enable it.
+    supported_platforms:
+      - windows
+    executor:
+      command: |
+        Set-MpPreference -DisableRealtimeMonitoring $true
+      cleanup_command: |
+        Set-MpPreference -DisableRealtimeMonitoring $false
       name: powershell
       elevation_required: true
