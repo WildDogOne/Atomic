@@ -7,7 +7,9 @@ atomic_tests:
     supported_platforms:
       - windows
     executor:
-      command: bitsadmin /create 1 bitsadmin /addfile 1 https://live.sysinternals.com/autoruns.exe $env:TEMP\autoruns.exe bitsadmin /RESUME 1 bitsadmin /complete 1
+      command: |
+        bitsadmin /create 1 bitsadmin /addfile 1 https://live.sysinternals.com/autoruns.exe $env:TEMP\autoruns.exe bitsadmin /RESUME 1 bitsadmin /complete 1
+        dir $env:TEMP\autoruns.exe bitsadmin
       cleanup_command: Remove-Item $env:TEMP\autoruns.exe -ErrorAction Ignore
       name: powershell
       elevation_required: false
