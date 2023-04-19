@@ -9,6 +9,7 @@ atomic_tests:
       - windows
     executor:
       command: |
+        New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" -Force
         Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" -Name "atomic_test" -Value 1
         Get-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths"
       cleanup_command: |
