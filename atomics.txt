@@ -64,7 +64,7 @@ T1018-18 Get-DomainController with PowerView
 T1018-19 Get-wmiobject to Enumerate Domain Controllers
 T1018-20 Remote System Discovery - net group Domain Controller
 T1020-1 IcedID Botnet HTTP PUT
-T1021.001-1 RDP to DomainController
+#T1021.001-1 RDP to DomainController
 T1021.001-2 Changing RDP Port to Non Standard Port via Powershell
 T1021.001-3 Changing RDP Port to Non Standard Port via Command_Prompt
 T1021.002-1 Map admin share
