@@ -24,7 +24,7 @@ results.
    ├── atomics
    │   └── test
    │       └── test.yaml
-   └── sentinel-alert-test.ps1
+   └── sentinel-atomic-test.ps1
    ```
 3. Configure the `config.ps1` file with the necessary values for the Azure AD App:
    ```
@@ -33,9 +33,9 @@ results.
    $tenantId = "your_tenant_id"
    $pageSize = 500 # This value can be adjusted based on your needs.
    ```
-4. Run the `sentinel-alert-test.ps1` script in PowerShell:
+4. Run the `sentinel-atomic-test.ps1` script in PowerShell:
    ```
-   .\sentinel-alert-test.ps1
+   .\sentinel-atomic-test.ps1
    ```
 
 The script will perform the following steps:

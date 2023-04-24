@@ -9,7 +9,7 @@ $sentinel_rules = @{ }
 # Process each atomic
 foreach ($atomic in $atomics)
 {
-    if ($atomic.Name -eq "test")
+    if ($atomic.Name -ne "registry_events")
     {
         $name = $atomic.Name
         # Run the atomic test

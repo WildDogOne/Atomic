@@ -3,6 +3,9 @@ display_name: "Masquerading: Rename System Utilities"
 atomic_tests:
   - name: File Extension Masquerading
     auto_generated_guid: cc9ad44f-1353-4eb0-a489-e129954d2a43
+    detection_type: sentinel
+    detection_rules:
+      - Double file Extension
     description: |
       Creates a file with double file extensions to masquerade as a different file type.
     supported_platforms:
