@@ -1,3 +1,13 @@
-$username = "XXX"
-$password = ConvertTo-SecureString "XXXX" -AsPlainText -Force
-$target = "XXXX"
+# Atomic Remote Test Credentials
+$username =  "XXX"
+$password =  ConvertTo-SecureString "XXX" -AsPlainText -Force
+$target =  "XXX"
+
+# Sentinel Credentials
+$tenantId =  "XXX"
+$appId =  "XXX"
+$appSecret =  "XXX"
+$subscriptionId =  "XXX"
+$resourceGroup =  "XXX"
+$workspaceName =  "XXX"
+$pageSize =  500
