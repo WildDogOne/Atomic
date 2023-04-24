@@ -13,7 +13,9 @@ foreach ($atomic in $atomics)
     {
         $name = $atomic.Name
         # Run the atomic test
-        Invoke-AtomicTest -TimeoutSeconds 60 $name -PathToAtomicsFolder
+        Invoke-AtomicTest -TimeoutSeconds 60 $name -PathToAtomicsFolder "$ScriptDir\atomics"
+        # Cleanup the atomic test
+        Invoke-AtomicTest -TimeoutSeconds 60 $name -PathToAtomicsFolder "$ScriptDir\atomics" -Cleanup
         # Load the YAML file
         $yamlFilePath = "$ScriptDir/atomics/$name/$name.yaml"
         $yamlData = Load-Yaml -filePath $yamlFilePath
@@ -31,6 +33,9 @@ foreach ($atomic in $atomics)
         }
     }
 }
+
+# Now we sleep for an hour to allow the Sentinel Rules to trigger
+Start-Sleep -Seconds 3600
 
 # Define the time range
 $startTime = (Get-Date).ToUniversalTime().AddHours(-2).ToString("yyyy-MM-ddTHH:mm:ssZ")
