@@ -116,5 +116,7 @@ if ($test_sentinel)
             Write-Host "The Sentinel Rule '$sentinel_rule' triggered during Atomic Tests" -ForegroundColor Green
         }
     }
+    $sentinel_rules.keys | Select @{l='Rule';e={$_}},@{l='Triggered';e={$sentinel_rules.$_}}
     return $sentinel_rules
 }
+
