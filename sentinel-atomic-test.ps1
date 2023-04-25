@@ -1,5 +1,5 @@
 param (
-    [bool]$local = $true,
+    [bool]$remote = $false,
     [String]$remoteHost,
     [bool]$test_atomic = $false,
     [bool]$test_sentinel = $true
@@ -12,11 +12,7 @@ $atomics = Get-ChildItem "$ScriptDir\atomics"
 $sentinel_rules = @{ }
 
 
-if ($local)
-{
-    $hostname = [System.Net.Dns]::GetHostName()
-}
-else
+if ($remote)
 {
     $hostname = $remoteHost
     if ($remoteHost -eq $null)
@@ -25,6 +21,10 @@ else
         exit
     }
     $psCred = New-Object System.Management.Automation.PSCredential -ArgumentList ($username, $password)
+}
+else
+{
+    $hostname = [System.Net.Dns]::GetHostName()
 }
 
 if ($test_atomic)
@@ -35,20 +35,21 @@ if ($test_atomic)
         if ($atomic.Name -ne "registry_events")
         {
             $name = $atomic.Name
-            if ($local)
+            if ($remote)
+            {
+                # Run atomic tests remotely
+                $sess = New-PSSession -ComputerName $target -Credential $psCred
+                Invoke-AtomicTest $name -Session $sess -GetPrereqs
+                Invoke-AtomicTest -TimeoutSeconds 60 $name -Session $sess -PathToAtomicsFolder "$ScriptDir\atomics"
+                Invoke-AtomicTest -TimeoutSeconds 60 $name -Session $sess -PathToAtomicsFolder "$ScriptDir\atomics" -Cleanup
+                Remove-PSSession $sess
+            }
+            else
             {
                 # Run the atomic test
                 Invoke-AtomicTest -TimeoutSeconds 60 $name -PathToAtomicsFolder "$ScriptDir\atomics"
                 # Cleanup the atomic test
                 Invoke-AtomicTest -TimeoutSeconds 60 $name -PathToAtomicsFolder "$ScriptDir\atomics" -Cleanup
-            }
-            else
-            {
-                $sess = New-PSSession -ComputerName $target -Credential $psCred
-                Invoke-AtomicTest $t -Session $sess -GetPrereqs
-                Invoke-AtomicTest -TimeoutSeconds 60 $t -Session $sess -PathToAtomicsFolder "$ScriptDir\atomics"
-                Invoke-AtomicTest -TimeoutSeconds 60 $t -Session $sess -PathToAtomicsFolder "$ScriptDir\atomics" -Cleanup
-                Remove-PSSession $sess
             }
 
             # Load the YAML file
