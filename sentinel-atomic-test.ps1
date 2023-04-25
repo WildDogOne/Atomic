@@ -116,4 +116,5 @@ if ($test_sentinel)
             Write-Host "The Sentinel Rule '$sentinel_rule' triggered during Atomic Tests" -ForegroundColor Green
         }
     }
+    return $sentinel_rules
 }
