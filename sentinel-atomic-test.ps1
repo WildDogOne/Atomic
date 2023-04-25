@@ -32,39 +32,36 @@ if ($test_atomic)
     # Process each atomic
     foreach ($atomic in $atomics)
     {
-        if ($atomic.Name -ne "registry_events")
+        $name = $atomic.Name
+        if ($remote)
         {
-            $name = $atomic.Name
-            if ($remote)
-            {
-                # Run atomic tests remotely
-                $sess = New-PSSession -ComputerName $target -Credential $psCred
-                Invoke-AtomicTest $name -Session $sess -GetPrereqs -PathToAtomicsFolder "$ScriptDir\atomics"
-                Invoke-AtomicTest -TimeoutSeconds 60 $name -Session $sess -PathToAtomicsFolder "$ScriptDir\atomics"
-                Invoke-AtomicTest -TimeoutSeconds 60 $name -Session $sess -PathToAtomicsFolder "$ScriptDir\atomics" -Cleanup
-                Remove-PSSession $sess
-            }
-            else
-            {
-                # Run the atomic test
-                Invoke-AtomicTest -TimeoutSeconds 60 $name -PathToAtomicsFolder "$ScriptDir\atomics"
-                # Cleanup the atomic test
-                Invoke-AtomicTest -TimeoutSeconds 60 $name -PathToAtomicsFolder "$ScriptDir\atomics" -Cleanup
-            }
+            # Run atomic tests remotely
+            $sess = New-PSSession -ComputerName $target -Credential $psCred
+            Invoke-AtomicTest $name -Session $sess -GetPrereqs -PathToAtomicsFolder "$ScriptDir\atomics"
+            Invoke-AtomicTest -TimeoutSeconds 60 $name -Session $sess -PathToAtomicsFolder "$ScriptDir\atomics"
+            Invoke-AtomicTest -TimeoutSeconds 60 $name -Session $sess -PathToAtomicsFolder "$ScriptDir\atomics" -Cleanup
+            Remove-PSSession $sess
+        }
+        else
+        {
+            # Run the atomic test
+            Invoke-AtomicTest -TimeoutSeconds 60 $name -PathToAtomicsFolder "$ScriptDir\atomics"
+            # Cleanup the atomic test
+            Invoke-AtomicTest -TimeoutSeconds 60 $name -PathToAtomicsFolder "$ScriptDir\atomics" -Cleanup
+        }
 
-            # Load the YAML file
-            $yamlFilePath = "$ScriptDir/atomics/$name/$name.yaml"
-            $yamlData = Load-Yaml -filePath $yamlFilePath
+        # Load the YAML file
+        $yamlFilePath = "$ScriptDir/atomics/$name/$name.yaml"
+        $yamlData = Load-Yaml -filePath $yamlFilePath
 
-            # Add Sentinel Detection Rules to sentinel_rules hashtable
-            foreach ($atomic_test in $yamlData.atomic_tests)
+        # Add Sentinel Detection Rules to sentinel_rules hashtable
+        foreach ($atomic_test in $yamlData.atomic_tests)
+        {
+            if ($atomic_test.detection_type -eq "sentinel")
             {
-                if ($atomic_test.detection_type -eq "sentinel")
+                foreach ($detection_rule in $atomic_test.detection_rules)
                 {
-                    foreach ($detection_rule in $atomic_test.detection_rules)
-                    {
-                        $sentinel_rules.Add($detection_rule, $False)
-                    }
+                    $sentinel_rules.Add($detection_rule, $False)
                 }
             }
         }
@@ -116,7 +113,7 @@ if ($test_sentinel)
             Write-Host "The Sentinel Rule '$sentinel_rule' triggered during Atomic Tests" -ForegroundColor Green
         }
     }
-    $sentinel_rules.keys | Select @{l='Rule';e={$_}},@{l='Triggered';e={$sentinel_rules.$_}}
+    $sentinel_rules.keys | Select @{ l = 'Rule'; e = { $_ } }, @{ l = 'Triggered'; e = { $sentinel_rules.$_ } }
     return $sentinel_rules
 }
 
