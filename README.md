@@ -49,7 +49,3 @@ The script will perform the following steps:
 6. Fetch all alerts for the specified time range.
 7. Iterate through the alerts and update the Sentinel rules hashtable based on the alerts.
 8. Display the results, indicating which Sentinel rules were triggered during the Atomic tests.
-
-Alternatively you can use the atomic_test.ps1 to only run the atomic tests.
-And at a later time sentinel_test.ps1 to only check the sentinel rules.
-The state of the atomic tests will be written into data/sentinel_rules.xml
