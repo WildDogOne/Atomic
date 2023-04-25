@@ -1,8 +1,8 @@
 param (
     [bool]$local = $true,
     [String]$remoteHost,
-    [bool]$atomic = $false,
-    [bool]$sentinel = $true
+    [bool]$test_atomic = $false,
+    [bool]$test_sentinel = $true
 )
 $ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
 . "$ScriptDir\config.ps1"
@@ -27,7 +27,7 @@ else
     $psCred = New-Object System.Management.Automation.PSCredential -ArgumentList ($username, $password)
 }
 
-if ($atomic)
+if ($test_atomic)
 {
     # Process each atomic
     foreach ($atomic in $atomics)
@@ -73,7 +73,7 @@ if ($atomic)
     #Start-Sleep -Seconds 3600
 }
 
-if ($sentinel)
+if ($test_sentinel)
 {
     $sentinel_rules = Import-Clixml -Path "$ScriptDir/data/sentinel_rules.xml"
     # Define the time range
