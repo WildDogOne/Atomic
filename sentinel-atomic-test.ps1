@@ -54,6 +54,7 @@ if ($test_atomic)
 
             # Load the YAML file
             $yamlFilePath = "$ScriptDir/atomics/$name/$name.yaml"
+            write-host $yamlFilePath
             $yamlData = Load-Yaml -filePath $yamlFilePath
 
             # Add Sentinel Detection Rules to sentinel_rules hashtable
