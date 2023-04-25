@@ -39,7 +39,7 @@ if ($test_atomic)
             {
                 # Run atomic tests remotely
                 $sess = New-PSSession -ComputerName $target -Credential $psCred
-                Invoke-AtomicTest $name -Session $sess -GetPrereqs
+                Invoke-AtomicTest $name -Session $sess -GetPrereqs -PathToAtomicsFolder "$ScriptDir\atomics"
                 Invoke-AtomicTest -TimeoutSeconds 60 $name -Session $sess -PathToAtomicsFolder "$ScriptDir\atomics"
                 Invoke-AtomicTest -TimeoutSeconds 60 $name -Session $sess -PathToAtomicsFolder "$ScriptDir\atomics" -Cleanup
                 Remove-PSSession $sess
@@ -54,7 +54,6 @@ if ($test_atomic)
 
             # Load the YAML file
             $yamlFilePath = "$ScriptDir/atomics/$name/$name.yaml"
-            write-host $yamlFilePath
             $yamlData = Load-Yaml -filePath $yamlFilePath
 
             # Add Sentinel Detection Rules to sentinel_rules hashtable
