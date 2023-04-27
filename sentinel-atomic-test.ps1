@@ -82,13 +82,27 @@ if ($test_sentinel)
     $allAlerts = Get-SentinelAlerts -startTime $startTime -endTime $endTime -pageSize $pageSize -appId $appId -appSecret $appSecret -tenantId $tenantId
 
     # Update sentinel_rules based on alerts
-    $updated_sentinel_rules = @{
+    $updated_sentinel_rules = @{ }
+    $Regex = "^([a-zA-Z0-9](?:(?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})$"
+    if ($hostname -match $Regex)
+    {
+        $FQDN = $hostname
+        $hostname = $hostname.Split(".")[0]
     }
+    else
+    {
+        $FQDN = $hostname
+    }
+
     foreach ($sentinel_rule in $sentinel_rules.keys)
     {
         foreach ($alert in $allAlerts)
         {
-            if ($alert.title.StartsWith($sentinel_rule, 'CurrentCultureIgnoreCase') -and $alert.hostStates.netBiosName -eq $hostname)
+            if ($alert.title.StartsWith($sentinel_rule, 'CurrentCultureIgnoreCase') -and
+                    ($alert.hostStates.netBiosName -eq $hostname -or
+                            $alert.hostStates.netBiosName -eq $FQDN -or
+                            $alert.hostStates.fqdn -eq $hostname -or
+                            $alert.hostStates.fqdn -eq $FQDN))
             {
                 $updated_sentinel_rules[$sentinel_rule] = $True
                 break
@@ -113,7 +127,13 @@ if ($test_sentinel)
             Write-Host "The Sentinel Rule '$sentinel_rule' triggered during Atomic Tests" -ForegroundColor Green
         }
     }
-    $sentinel_rules.keys | Select @{ l = 'Rule'; e = { $_ } }, @{ l = 'Triggered'; e = { $sentinel_rules.$_ } }
+    $sentinel_rules = $updated_sentinel_rules.GetEnumerator() |
+            ForEach-Object {
+                [PSCustomObject]@{
+                    Rule = $_.Key
+                    Triggered = $_.Value
+                }
+            }
     return $sentinel_rules
 }
 
